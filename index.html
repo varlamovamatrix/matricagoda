@@ -75,6 +75,15 @@
       box-shadow: 0 4px 14px rgba(57, 46, 69, 0.2);
     }
 
+    /* Sticky navigation bar for interpretation section */
+    .sticky-nav-bar {
+      position: sticky;
+      top: 12px;
+      z-index: 30;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
     /* Smooth accordion & transitions */
     .fade-in {
       animation: fadeIn 0.45s ease-out forwards;
@@ -177,7 +186,7 @@
             Исследуемый год (для расчета матрицы)
           </label>
           <div class="relative">
-            <input type="number" id="target-year" min="2000" max="2100" value="2026" required
+            <input type="number" id="target-year" min="2000" max="2100" placeholder="Например: 2026" required
               class="w-full px-4 py-3 rounded-[16px] bg-[#F4EEE6]/50 border border-[#392E45]/15 focus:outline-none focus:border-[#BE985C] text-[#392E45] font-semibold text-center placeholder-[#392E45]/40 transition">
             <span class="absolute right-4 top-3.5 text-xs text-[#392E45]/50">1 янв – 31 дек</span>
           </div>
@@ -306,25 +315,39 @@
         </div>
       </div>
 
-      <section class="bg-white/90 backdrop-blur-md rounded-[32px] p-6 sm:p-10 border border-[#392E45]/10 shadow-sm">
+      <!-- Interpretation Anchor Target -->
+      <div id="interpretation-section-anchor" class="-mt-6 mb-2"></div>
+
+      <section class="bg-white/90 backdrop-blur-md rounded-[32px] p-6 sm:p-10 border border-[#392E45]/10 shadow-sm relative">
         
-        <!-- Tab Navigation Bar -->
-        <div class="flex flex-wrap gap-2 border-b border-[#392E45]/10 pb-4 mb-8">
-          <button onclick="switchTab('pos1')" id="tab-btn-pos1" class="tab-btn active px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-[#392E45] bg-[#F4EEE6]">
-            Ресурс года
-          </button>
-          <button onclick="switchTab('pos2')" id="tab-btn-pos2" class="tab-btn px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-[#392E45] bg-[#F4EEE6]">
-            Талант года
-          </button>
-          <button onclick="switchTab('pos3')" id="tab-btn-pos3" class="tab-btn px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-[#392E45] bg-[#F4EEE6]">
-            Урок и стратегия года
-          </button>
-          <button onclick="switchTab('pos4')" id="tab-btn-pos4" class="tab-btn px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-[#392E45] bg-[#F4EEE6]">
-            Главный экзамен
-          </button>
-          <button onclick="switchTab('pos5')" id="tab-btn-pos5" class="tab-btn px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-[#392E45] bg-[#F4EEE6]">
-            Суть года
-          </button>
+        <!-- Sticky Tab Navigation Bar: stays pinned while scrolling so user never needs to backtrack -->
+        <div class="sticky-nav-bar bg-[#F4EEE6]/90 border border-[#392E45]/10 p-2 sm:p-2.5 rounded-[24px] mb-8 shadow-sm">
+          <div class="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar py-1">
+            <div class="flex items-center gap-1.5 sm:gap-2 flex-nowrap">
+              <button onclick="switchTab('pos1', true)" id="tab-btn-pos1" class="tab-btn active px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap text-[#392E45] bg-[#F4EEE6]">
+                1. Ресурс
+              </button>
+              <button onclick="switchTab('pos2', true)" id="tab-btn-pos2" class="tab-btn px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap text-[#392E45] bg-[#F4EEE6]">
+                2. Талант
+              </button>
+              <button onclick="switchTab('pos3', true)" id="tab-btn-pos3" class="tab-btn px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap text-[#392E45] bg-[#F4EEE6]">
+                3. Урок года
+              </button>
+              <button onclick="switchTab('pos4', true)" id="tab-btn-pos4" class="tab-btn px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap text-[#392E45] bg-[#F4EEE6]">
+                4. Экзамен
+              </button>
+              <button onclick="switchTab('pos5', true)" id="tab-btn-pos5" class="tab-btn px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap text-[#392E45] bg-[#F4EEE6]">
+                5. Суть года
+              </button>
+            </div>
+            
+            <button onclick="document.getElementById('matrix-svg').scrollIntoView({behavior: 'smooth', block: 'center'})" 
+                    title="Вернуться к ромбу" 
+                    class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-[#392E45]/70 hover:text-[#392E45] bg-white/70 border border-[#392E45]/10 transition flex-shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+              <span>К ромбу</span>
+            </button>
+          </div>
         </div>
 
         <!-- Tab Content Container -->
@@ -407,7 +430,7 @@
                 <span id="faq-icon-5" class="w-6 h-6 rounded-full bg-white flex items-center justify-center text-xs text-[#392E45] flex-shrink-0 transition-transform duration-300 shadow-sm">+</span>
               </button>
               <div id="faq-body-5" class="hidden px-6 pb-5 text-xs sm:text-sm text-[#392E45]/80 leading-relaxed border-t border-[#392E45]/5 pt-3">
-                <strong>Категорически нет.</strong> В методологии «Осознанность с характером» нет фатализма и запугивания. Любой код — это лишь концентрация определенного типа напряжения в поле. Например, так называемые «формулы здоровья» означают лишь необходимость заранее пройти плановый чекап организма, наладить сон и не работать на износ. А «формулы отношений» предупреждают: не замалчивайте обиды, снимите претензии и научитесь открыто говорить с партнером. Матрица года дана как инструкция по безопасности, а не как приговор.
+                <strong>Категорически нет.</strong> В методологии Матрицы Года и нет фатализма и запугивания. Любой код — это лишь концентрация определенного типа напряжения в поле. Например, так называемые «формулы здоровья» означают лишь необходимость заранее пройти плановый чекап организма, наладить сон и не работать на износ. А «формулы отношений» предупреждают: не замалчивайте обиды, снимите претензии и научитесь открыто говорить с партнером. Матрица года дана как инструкция по безопасности, а не как приговор.
               </div>
             </div>
 
@@ -1835,6 +1858,7 @@
 
     function renderEventBadges() {
       const container = document.getElementById('event-codes-container');
+      if (!container) return;
       container.innerHTML = '';
       
       const allPoints = [matrixState.A1, matrixState.B1, matrixState.V1, matrixState.G1, matrixState.Ya1];
@@ -1843,52 +1867,47 @@
       let html = '';
 
       // Active events block
-      html += `
-        <div class="space-y-2.5">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-            <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">Активировано в этом году:</span>
-          </div>
-      `;
-
-      if (active.length === 0) {
-        html += `<div class="text-xs text-[#392E45]/60 p-3 rounded-[16px] bg-[#F4EEE6]/70 border border-[#392E45]/10">В карте активен период планомерного внутреннего накопления без резких событийных всплесков.</div>`;
-      } else {
-        active.forEach(ev => {
-          html += `
-            <div class="p-3.5 rounded-[18px] border border-emerald-500/25 bg-emerald-500/10 flex flex-col gap-1 transition">
-              <div class="flex items-center justify-between gap-2">
-                <span class="text-xs font-bold text-[#392E45]">${ev.tag}</span>
-                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-600 text-white">Активно</span>
-              </div>
-              <p class="text-xs text-[#392E45]/85 leading-snug">${ev.desc}</p>
+      if (active.length > 0) {
+        html += `
+          <div class="space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span class="text-xs uppercase tracking-wider font-extrabold text-emerald-800">Активировано в этом году:</span>
             </div>
-          `;
-        });
+            <div class="grid grid-cols-1 gap-2.5">
+              ${active.map(event => `
+                <div class="p-3.5 rounded-[18px] bg-emerald-500/10 border border-emerald-500/25 flex flex-col gap-1 transition">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="font-bold text-xs sm:text-sm text-[#392E45]">${event.tag}</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/80 font-bold text-emerald-800 border border-emerald-500/20">
+                      ${event.matchedEnergies.join(', ')} энергия
+                    </span>
+                  </div>
+                  <p class="text-xs text-[#392E45]/80 leading-relaxed font-normal">${event.desc}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        html += `
+          <div class="p-4 rounded-[18px] bg-[#F4EEE6] border border-[#392E45]/10 text-xs text-[#392E45]/80">
+            В этом периоде нет резких событийных всплесков — время плавного внутреннего накопления ресурса.
+          </div>
+        `;
       }
-      html += `</div>`;
 
-      // Inactive events block
+      // Inactive / sleeping events block
       if (inactive.length > 0) {
         html += `
-          <div class="space-y-2 pt-2 border-t border-[#392E45]/10">
-            <div class="flex items-center gap-2 mb-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#392E45]/30"></span>
-              <span class="text-xs font-bold uppercase tracking-wider text-[#392E45]/60">Не активировано в этом году:</span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        `;
-        inactive.forEach(ev => {
-          html += `
-            <div class="p-2.5 rounded-[14px] border border-[#392E45]/10 bg-[#F4EEE6]/40 opacity-70">
-              <div class="text-[11px] font-semibold text-[#392E45]/70 flex items-center gap-1.5">
-                <span class="text-[#392E45]/40">—</span>
-                <span>${ev.tag}</span>
-              </div>
-            </div>
-          `;
-        });
-        html += `
+          <div class="pt-4 border-t border-[#392E45]/10 mt-4">
+            <span class="text-[11px] uppercase tracking-wider font-bold text-[#392E45]/50 block mb-2">Не активировано в этом году (спящие коды):</span>
+            <div class="flex flex-wrap gap-1.5">
+              ${inactive.map(event => `
+                <span class="px-2.5 py-1 rounded-full bg-[#F4EEE6]/70 border border-[#392E45]/10 text-[#392E45]/50 text-[11px] font-medium select-none">
+                  ${event.tag}
+                </span>
+              `).join('')}
             </div>
           </div>
         `;
@@ -1897,7 +1916,7 @@
       container.innerHTML = html;
     }
 
-    function switchTab(tabKey) {
+    function switchTab(tabKey, shouldScroll = false) {
       matrixState.activeTab = tabKey;
 
       // Update tab buttons style
@@ -1922,6 +1941,14 @@
 
       // Render tab body
       renderTabContent(tabKey);
+
+      // Smoothly bring the reader into focus without losing context
+      if (shouldScroll) {
+        const anchor = document.getElementById('interpretation-section-anchor');
+        if (anchor) {
+          anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     }
 
     function renderTabContent(tabKey) {
@@ -2363,6 +2390,51 @@
         </div>
       `;
 
+      // POSITION PAGINATION CONTROLS (NEXT / PREV BUTTONS)
+      const tabOrder = ['pos1', 'pos2', 'pos3', 'pos4', 'pos5'];
+      const currentIdx = tabOrder.indexOf(tabKey);
+      const prevKey = currentIdx > 0 ? tabOrder[currentIdx - 1] : null;
+      const nextKey = currentIdx < tabOrder.length - 1 ? tabOrder[currentIdx + 1] : null;
+
+      const posTitles = {
+        pos1: '1. Ресурс года',
+        pos2: '2. Талант года',
+        pos3: '3. Урок года',
+        pos4: '4. Экзамен года',
+        pos5: '5. Суть года'
+      };
+
+      html += `
+        <!-- Bottom Pagination Bar: smooth navigation without scrolling all the way back up -->
+        <div class="mt-10 pt-6 border-t border-[#392E45]/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            ${prevKey ? `
+              <button onclick="switchTab('${prevKey}', true)" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-[16px] bg-[#F4EEE6] hover:bg-[#e8dec0] text-[#392E45] font-semibold text-xs sm:text-sm border border-[#392E45]/15 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                <span>${posTitles[prevKey]}</span>
+              </button>
+            ` : `<span class="hidden sm:inline-block"></span>`}
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-[#392E45]/60">Позиция ${currentIdx + 1} из 5</span>
+          </div>
+
+          <div>
+            ${nextKey ? `
+              <button onclick="switchTab('${nextKey}', true)" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[16px] bg-[#392E45] hover:bg-[#392E45]/90 text-white font-bold text-xs sm:text-sm shadow-sm transition hover:scale-[1.02]">
+                <span>Читать далее: ${posTitles[nextKey]}</span>
+                <svg class="w-4 h-4 text-[#BE985C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            ` : `
+              <button onclick="document.getElementById('matrix-svg').scrollIntoView({behavior: 'smooth', block: 'center'})" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[16px] bg-[#BE985C] hover:bg-[#ab864c] text-white font-bold text-xs sm:text-sm shadow-sm transition">
+                <span>Вернуться к схеме года ↑</span>
+              </button>
+            `}
+          </div>
+        </div>
+      `;
+
       html += `</div>`;
       container.innerHTML = html;
     }
@@ -2682,6 +2754,281 @@
       };
     }
 
+    /* Helper: construct a self-contained HTML block for a specific tab position for the full PDF report */
+    function generatePositionHtmlForPdf(posKey, posNumber, posName, arcanNum) {
+      if (arcanNum < 3) arcanNum = 3;
+      const data = ARCHETYPES_DATA[arcanNum] || ARCHETYPES_DATA[3];
+      const practical = getPracticalTipsForArcan(arcanNum, posKey);
+      const deep = getDeepDiveModulesForArcan(arcanNum);
+
+      let specificSectionHtml = '';
+      if (posKey === 'pos1') {
+        specificSectionHtml = `
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div style="background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.25); border-radius: 14px; padding: 14px;">
+              <strong style="color: #065f46; display: block; margin-bottom: 8px;">+ Где ваш неисчерпаемый ресурс:</strong>
+              <div style="font-size: 11px; line-height: 1.5; color: #392E45; white-space: pre-line;">${data.pos1_resource.plus}</div>
+            </div>
+            <div style="background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.25); border-radius: 14px; padding: 14px;">
+              <strong style="color: #9f1239; display: block; margin-bottom: 8px;">- Куда утекает энергия и силы:</strong>
+              <div style="font-size: 11px; line-height: 1.5; color: #392E45; white-space: pre-line;">${data.pos1_resource.minus}</div>
+            </div>
+          </div>
+          <div style="background: #ffffff; border: 1px solid rgba(57,46,69,0.12); border-radius: 14px; padding: 14px; margin-bottom: 14px;">
+            <strong style="color: #BE985C; display: block; margin-bottom: 6px;">✦ Какое поле и возможности формирует этот год:</strong>
+            <p style="font-size: 11px; line-height: 1.5; color: #392E45; margin: 0;">${data.pos1_resource.field}</p>
+          </div>
+        `;
+      } else if (posKey === 'pos2') {
+        specificSectionHtml = `
+          <div style="background: rgba(213,204,226,0.35); border: 1px solid rgba(213,204,226,0.8); border-radius: 14px; padding: 14px; margin-bottom: 14px;">
+            <span style="font-size: 10px; text-transform: uppercase; font-weight: bold; color: rgba(57,46,69,0.6); display: block; margin-bottom: 4px;">Запрос Вселенной на год</span>
+            <p style="font-size: 13px; font-weight: bold; color: #392E45; margin: 0; font-style: italic;">«${data.pos2_talent.universe}»</p>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div style="background: #ffffff; border: 1px solid rgba(57,46,69,0.12); border-radius: 14px; padding: 14px;">
+              <strong style="color: #BE985C; display: block; margin-bottom: 6px;">✦ Таланты и сверхспособности:</strong>
+              <div style="font-size: 11px; line-height: 1.5; color: #392E45; white-space: pre-line;">${data.pos2_talent.talents}</div>
+            </div>
+            <div style="background: #ffffff; border: 1px solid rgba(57,46,69,0.12); border-radius: 14px; padding: 14px;">
+              <strong style="color: #A7B4A0; display: block; margin-bottom: 6px;">✦ Потенциал и дары года:</strong>
+              <p style="font-size: 11px; line-height: 1.5; color: #392E45; margin: 0;">${data.pos2_talent.potentials}</p>
+            </div>
+          </div>
+        `;
+      } else if (posKey === 'pos3') {
+        specificSectionHtml = `
+          <div style="background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.35); border-radius: 14px; padding: 14px; margin-bottom: 14px;">
+            <strong style="color: #92400e; display: block; margin-bottom: 6px;">⚠️ Ловушки ума и психологические иллюзии:</strong>
+            <p style="font-size: 11px; line-height: 1.5; color: #392E45; margin: 0;">${data.pos3_lesson.traps}</p>
+          </div>
+          <div style="background: #ffffff; border: 1px solid rgba(57,46,69,0.12); border-radius: 14px; padding: 14px; margin-bottom: 14px;">
+            <strong style="color: #BE985C; display: block; margin-bottom: 6px;">✔ Пошаговая стратегия победы на год:</strong>
+            <div style="font-size: 11px; line-height: 1.5; color: #392E45; white-space: pre-line;">${data.pos3_lesson.strategy}</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div style="background: rgba(244,238,230,0.8); border: 1px solid rgba(57,46,69,0.1); border-radius: 14px; padding: 12px;">
+              <strong style="color: #E8B39E; display: block; margin-bottom: 4px; font-size: 11px;">Специфика для женщин:</strong>
+              <p style="font-size: 10px; color: #392E45; line-height: 1.4; margin: 0;">${data.pos3_lesson.women_trials || ''}</p>
+            </div>
+            <div style="background: rgba(244,238,230,0.8); border: 1px solid rgba(57,46,69,0.1); border-radius: 14px; padding: 12px;">
+              <strong style="color: #A7B4A0; display: block; margin-bottom: 4px; font-size: 11px;">Специфика для мужчин:</strong>
+              <p style="font-size: 10px; color: #392E45; line-height: 1.4; margin: 0;">${data.pos3_lesson.men_trials || ''}</p>
+            </div>
+          </div>
+        `;
+      } else if (posKey === 'pos4') {
+        specificSectionHtml = `
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div style="background: #ffffff; border: 1px solid rgba(57,46,69,0.12); border-radius: 14px; padding: 14px;">
+              <strong style="color: #E8B39E; display: block; margin-bottom: 6px;">⚖ Сферы главной проверки года:</strong>
+              <p style="font-size: 11px; line-height: 1.5; color: #392E45; margin: 0;">${data.pos4_exam.spheres}</p>
+            </div>
+            <div style="background: #ffffff; border: 1px solid rgba(57,46,69,0.12); border-radius: 14px; padding: 14px;">
+              <strong style="color: #e11d48; display: block; margin-bottom: 6px;">⚡ Зоны риска и триггеры периода:</strong>
+              <p style="font-size: 11px; line-height: 1.5; color: #392E45; margin: 0;">${data.pos4_exam.triggers}</p>
+            </div>
+          </div>
+          <div style="background: rgba(232,179,158,0.2); border: 1px solid rgba(232,179,158,0.6); border-radius: 14px; padding: 14px; margin-bottom: 14px;">
+            <strong style="color: #392E45; display: block; margin-bottom: 6px;">🛡 Инструкция: как сдать экзамен на отлично:</strong>
+            <p style="font-size: 11px; line-height: 1.5; color: #392E45; margin: 0;">${data.pos4_exam.howToPass}</p>
+          </div>
+          <div style="background: #ffffff; border: 1px solid rgba(57,46,69,0.12); border-radius: 14px; padding: 14px; margin-bottom: 14px;">
+            <strong style="color: #BE985C; display: block; margin-bottom: 8px;">🔍 Вопросы для глубокой саморефлексии:</strong>
+            <ol style="margin: 0; padding-left: 18px; font-size: 11px; line-height: 1.5; color: #392E45;">
+              ${data.pos4_exam.questions.map(q => `<li style="margin-bottom: 4px;">${q}</li>`).join('')}
+            </ol>
+          </div>
+        `;
+      } else if (posKey === 'pos5') {
+        specificSectionHtml = `
+          <div style="background: rgba(167,180,160,0.25); border: 1px solid rgba(167,180,160,0.6); border-radius: 16px; padding: 18px; text-align: center; margin-bottom: 14px;">
+            <span style="font-size: 10px; text-transform: uppercase; font-weight: bold; color: rgba(57,46,69,0.6); display: block; margin-bottom: 6px;">Квинтэссенция и главный смысл периода</span>
+            <p style="font-size: 15px; font-weight: bold; color: #392E45; margin: 0; font-style: italic;">«${data.pos5_core.summary}»</p>
+          </div>
+        `;
+      }
+
+      return `
+        <div style="page-break-before: always; padding-top: 10px;">
+          <!-- Section Banner -->
+          <div style="background: #392E45; color: #ffffff; padding: 10px 16px; border-radius: 12px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 13px; font-weight: bold;">Позиция ${posNumber}: ${posName}</span>
+            <span style="font-size: 12px; font-weight: 600; color: #E8B39E;">${arcanNum} энергия</span>
+          </div>
+
+          <h3 style="font-size: 17px; font-weight: 800; color: #392E45; margin: 0 0 10px 0;">${data.title}</h3>
+          
+          ${specificSectionHtml}
+
+          <!-- Practical Guidance Box -->
+          <div style="background: #fdfbf7; border: 1px solid rgba(190,152,92,0.3); border-radius: 14px; padding: 12px; margin-bottom: 14px;">
+            <strong style="color: #BE985C; font-size: 12px; display: block; margin-bottom: 8px;">⚡ Практическое руководство: как обойти острые углы</strong>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; font-size: 10px; line-height: 1.4; color: #392E45;">
+              <div style="background: rgba(244,63,94,0.08); padding: 8px; border-radius: 8px;">
+                <strong style="color: #9f1239; display: block; margin-bottom: 4px;">🚩 Красные флаги:</strong>
+                ${practical.redFlags}
+              </div>
+              <div style="background: rgba(245,158,11,0.08); padding: 8px; border-radius: 8px;">
+                <strong style="color: #92400e; display: block; margin-bottom: 4px;">🛡 Как сгладить:</strong>
+                ${practical.mitigation}
+              </div>
+              <div style="background: rgba(167,180,160,0.18); padding: 8px; border-radius: 8px;">
+                <strong style="color: #2e3e29; display: block; margin-bottom: 4px;">🔍 Внимание:</strong>
+                ${practical.vigilance}
+              </div>
+            </div>
+          </div>
+
+          <!-- Strategic Modules Box -->
+          <div style="border: 1px solid rgba(57,46,69,0.1); border-radius: 14px; padding: 12px; background: #ffffff;">
+            <strong style="color: #392E45; font-size: 12px; display: block; margin-bottom: 8px;">📊 Стратегические протоколы сферы</strong>
+            <div style="font-size: 10px; line-height: 1.4; color: #392E45;">
+              <div style="margin-bottom: 6px;"><strong>💰 Финансы:</strong> ${deep.finance.strategy}</div>
+              <div style="margin-bottom: 6px;"><strong>❤️ Отношения:</strong> ${deep.relationship.core}</div>
+              <div style="margin-bottom: 6px;"><strong>🩺 Здоровье:</strong> ${deep.health.vulnerable} (<em>Примечание: информация носит исключительно рекомендательный характер, при недомогании обращайтесь к врачу</em>).</div>
+              <div style="margin-bottom: 4px;"><strong>🗓 Кварталы:</strong> Зима (${deep.roadmap.q1}) • Весна (${deep.roadmap.q2}) • Лето (${deep.roadmap.q3}) • Осень (${deep.roadmap.q4})</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* Core function: generate and download comprehensive multi-page PDF */
+    async function exportFullReportToPdf() {
+      const btn = document.getElementById('pdf-download-btn');
+      const btnText = document.getElementById('pdf-btn-text');
+
+      if (!matrixState.birthDate) {
+        return;
+      }
+
+      // UI state feedback
+      const originalText = btnText.textContent;
+      btnText.textContent = "Формирование книги PDF...";
+      btn.disabled = true;
+      btn.style.opacity = "0.7";
+
+      try {
+        // Collect SVG Rhombus representation
+        const svgEl = document.getElementById('matrix-svg');
+        const svgClone = svgEl.cloneNode(true);
+        svgClone.style.width = "300px";
+        svgClone.style.height = "260px";
+        svgClone.style.margin = "0 auto";
+        svgClone.style.display = "block";
+
+        // Event codes status
+        const allPoints = [matrixState.A1, matrixState.B1, matrixState.V1, matrixState.G1, matrixState.Ya1];
+        const { active, inactive } = evaluateEventCodes(allPoints);
+
+        const activeListHtml = active.map(e => `<li style="margin-bottom: 4px;"><strong>${e.tag}:</strong> ${e.desc}</li>`).join('');
+        const inactiveListHtml = inactive.map(e => `<span style="display: inline-block; background: #eee; padding: 2px 8px; border-radius: 6px; margin: 2px; font-size: 9px;">${e.tag}</span>`).join(' ');
+
+        // Create temporary offscreen printing wrapper
+        const reportContainer = document.createElement('div');
+        reportContainer.style.width = "750px";
+        reportContainer.style.padding = "24px";
+        reportContainer.style.background = "#F4EEE6";
+        reportContainer.style.fontFamily = "'Golos Text', 'Helvetica Neue', Arial, sans-serif";
+        reportContainer.style.color = "#392E45";
+        reportContainer.style.boxSizing = "border-box";
+
+        reportContainer.innerHTML = `
+          <!-- Page 1: Cover & Summary Dashboard -->
+          <div style="background: #ffffff; border-radius: 20px; padding: 24px; border: 1px solid rgba(57,46,69,0.12); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(57,46,69,0.1); padding-bottom: 12px; margin-bottom: 16px;">
+              <div>
+                <span style="font-size: 14px; font-weight: 800; color: #392E45;">Осознанность с характером</span>
+                <span style="font-size: 10px; color: rgba(57,46,69,0.6); display: block;">Личная стратегия и потенциал года</span>
+              </div>
+              <span style="font-size: 11px; font-weight: bold; color: #BE985C;">t.me/varlamova_matrix</span>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 16px;">
+              <span style="font-size: 10px; text-transform: uppercase; font-weight: 700; color: #BE985C; letter-spacing: 1px;">Инструмент персонального стратегического планирования</span>
+              <h1 style="font-size: 24px; font-weight: 800; color: #392E45; margin: 6px 0;">Твой персональный маршрут на ${matrixState.targetYear} год</h1>
+              <p style="font-size: 12px; color: rgba(57,46,69,0.8); margin: 0;">Дата рождения: <strong>${matrixState.birthDate}</strong> • Общий аркан года: <strong>${matrixState.yearArcan}</strong></p>
+            </div>
+
+            <!-- Rhombus Diamond -->
+            <div style="text-align: center; margin: 10px 0;">
+              ${svgClone.outerHTML}
+            </div>
+
+            <!-- Summary Table of 5 Points -->
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; text-align: center; margin: 16px 0;">
+              <div style="background: #F4EEE6; padding: 8px; border-radius: 10px; border: 1px solid rgba(57,46,69,0.08);">
+                <span style="font-size: 9px; display: block; color: rgba(57,46,69,0.7);">Ресурс</span>
+                <strong style="font-size: 14px; color: #392E45;">${matrixState.A1}</strong>
+              </div>
+              <div style="background: #F4EEE6; padding: 8px; border-radius: 10px; border: 1px solid rgba(57,46,69,0.08);">
+                <span style="font-size: 9px; display: block; color: rgba(57,46,69,0.7);">Талант</span>
+                <strong style="font-size: 14px; color: #392E45;">${matrixState.B1}</strong>
+              </div>
+              <div style="background: #F4EEE6; padding: 8px; border-radius: 10px; border: 1px solid rgba(57,46,69,0.08);">
+                <span style="font-size: 9px; display: block; color: rgba(57,46,69,0.7);">Урок</span>
+                <strong style="font-size: 14px; color: #392E45;">${matrixState.V1}</strong>
+              </div>
+              <div style="background: #F4EEE6; padding: 8px; border-radius: 10px; border: 1px solid rgba(57,46,69,0.08);">
+                <span style="font-size: 9px; display: block; color: rgba(57,46,69,0.7);">Экзамен</span>
+                <strong style="font-size: 14px; color: #392E45;">${matrixState.G1}</strong>
+              </div>
+              <div style="background: rgba(167,180,160,0.3); padding: 8px; border-radius: 10px; border: 1px solid rgba(167,180,160,0.5);">
+                <span style="font-size: 9px; display: block; color: rgba(57,46,69,0.8);">Суть года</span>
+                <strong style="font-size: 14px; color: #392E45;">${matrixState.Ya1}</strong>
+              </div>
+            </div>
+
+            <!-- Event Codes Section -->
+            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(57,46,69,0.1);">
+              <strong style="font-size: 11px; text-transform: uppercase; color: #065f46; display: block; margin-bottom: 6px;">Активированные коды событий в карте:</strong>
+              <ul style="font-size: 10px; line-height: 1.4; color: #392E45; margin: 0 0 10px 0; padding-left: 16px;">
+                ${activeListHtml || '<li>Период планомерного внутреннего накопления без резких событийных скачков.</li>'}
+              </ul>
+              <strong style="font-size: 10px; text-transform: uppercase; color: rgba(57,46,69,0.6); display: block; margin-bottom: 4px;">Спящие коды:</strong>
+              <div>${inactiveListHtml}</div>
+            </div>
+          </div>
+
+          <!-- Detailed Comprehensive Chapters for All 5 Positions -->
+          ${generatePositionHtmlForPdf('pos1', 1, 'Ресурс года', matrixState.A1)}
+          ${generatePositionHtmlForPdf('pos2', 2, 'Талант года', matrixState.B1)}
+          ${generatePositionHtmlForPdf('pos3', 3, 'Урок и стратегия года', matrixState.V1)}
+          ${generatePositionHtmlForPdf('pos4', 4, 'Главный экзамен года', matrixState.G1)}
+          ${generatePositionHtmlForPdf('pos5', 5, 'Суть года', matrixState.Ya1)}
+
+          <!-- Footer on last page -->
+          <div style="margin-top: 24px; padding: 14px; text-align: center; font-size: 10px; color: rgba(57,46,69,0.5); border-top: 1px solid rgba(57,46,69,0.1);">
+            © Осознанность с характером. Расчет матрицы года актуален с 1 января по 31 декабря.<br>
+            Материалы подготовлены по методу Юлии Богацкой. Все права защищены.
+          </div>
+        `;
+
+        document.body.appendChild(reportContainer);
+
+        const opt = {
+          margin: [10, 8, 10, 8],
+          filename: `Marshrut_Goda_${matrixState.birthDate}_${matrixState.targetYear}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, logging: false },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        await html2pdf().set(opt).from(reportContainer).save();
+        document.body.removeChild(reportContainer);
+
+      } catch (err) {
+        console.error("PDF generation failed:", err);
+        // Fallback to native print dialog
+        window.print();
+      } finally {
+        btnText.textContent = originalText;
+        btn.disabled = false;
+        btn.style.opacity = "1";
+      }
+    }
+
     function toggleFaq(index) {
       const body = document.getElementById(`faq-body-${index}`);
       const icon = document.getElementById(`faq-icon-${index}`);
@@ -2708,14 +3055,12 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      // Set default demo inputs (matches the screenshot: 09.06.1989 on 2026)
-      document.getElementById('birth-day').value = 9;
-      document.getElementById('birth-month').value = 6;
-      document.getElementById('birth-year').value = 1989;
-      document.getElementById('target-year').value = 2026;
-      
-      // Auto-trigger calculation to give an instant live preview
-      document.getElementById('matrix-form').dispatchEvent(new Event('submit'));
+      // Inputs remain empty on initial load so the user enters their own data.
+      // Automatically sets current year as a placeholder/hint if target year is empty
+      const targetInput = document.getElementById('target-year');
+      if (targetInput && !targetInput.value) {
+        targetInput.value = new Date().getFullYear();
+      }
     });
   </script>
 </body>
